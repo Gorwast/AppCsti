@@ -1,0 +1,15 @@
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.csti.LoginFragment"
+        android:label="Login" />
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.csti.MainFragment"
+        android:label="Main" />
+</navigation>
