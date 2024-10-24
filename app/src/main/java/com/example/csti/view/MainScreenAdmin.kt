@@ -31,14 +31,13 @@ fun MainScreenAdmin(navController: NavController) {
 
     LaunchedEffect(Unit) {
         coroutineScope.launch {
-            db.collection("Solicitud")
+            db.collection("solicitud")
                 .get()
                 .addOnSuccessListener { documents ->
                     val reportes = documents.mapNotNull { it.toObject(solicitud::class.java) }
                     solicitudes = reportes
                 }
                 .addOnFailureListener { exception ->
-                    // Manejar el error aquí (ej. mostrar un mensaje al usuario)
                 }
         }
     }
@@ -146,7 +145,7 @@ fun MainScreenAdmin(navController: NavController) {
                 items(solicitudes) { reporte ->
                     AdminReportItem(reporte) { selectedReporte ->
                         // Navegar pasando el ID del reporte
-                        navController.navigate("DetalleReporteAdminScreen/${selectedReporte.id_solicitud}")
+                        navController.navigate("DetalleReporteAdminScreen/${selectedReporte.id_profesor}")
                     }
                 }
             }
@@ -174,15 +173,9 @@ fun AdminReportItem(solicitud: solicitud, onClick: (solicitud) -> Unit) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
-                    text = solicitud.aula,
-                    fontSize = 16.sp
-                )
+                Text(text = solicitud.aula ?: "", fontSize = 16.sp)
                 Spacer(modifier = Modifier.width(16.dp))
-                Text(
-                    text = solicitud.descripcion_problema,
-                    fontSize = 16.sp
-                )
+                Text(text = solicitud.descripcion_problema ?: "", fontSize = 16.sp)
             }
         }
     }

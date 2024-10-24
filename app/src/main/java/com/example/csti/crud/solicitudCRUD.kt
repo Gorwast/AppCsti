@@ -1,5 +1,7 @@
 package com.example.csti
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 
 class SolicitudCRUD(private val db: FirebaseFirestore) {
@@ -24,15 +26,15 @@ class SolicitudCRUD(private val db: FirebaseFirestore) {
     }
 
     fun readSolicitudes() {
-        db.collection("Solicitud")
+        db.collection("solicitud")
             .get()
-            .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    // Procesa cada documento
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    Log.d(TAG, "${document.id} => ${document.data}")
                 }
             }
-            .addOnFailureListener { e ->
-                // Error al obtener los documentos
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents.", exception)
             }
     }
 

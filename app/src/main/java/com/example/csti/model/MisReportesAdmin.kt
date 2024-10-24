@@ -104,7 +104,7 @@ fun MisReportesAdmin(navController: NavController) {
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             items(solicitudes) { reporte ->
                 ReportItem(reporte) { selectedReporte ->
-                    navController.navigate("detalle/${reporte.id_solicitud},${reporte.fecha_hora_envio},${reporte.aula},${reporte.estatus},${reporte.descripcion_problema}?fromMisReportes=true")
+                    navController.navigate("detalle/${reporte.id_profesor},${reporte.fecha_hora_envio},${reporte.aula},${reporte.estatus},${reporte.descripcion_problema}?fromMisReportes=true")
                 }
             }
         }

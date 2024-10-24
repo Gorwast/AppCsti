@@ -1,7 +1,5 @@
 package com.example.csti
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 
 class UsuarioCRUD(private val db: FirebaseFirestore) {
@@ -31,13 +29,13 @@ class UsuarioCRUD(private val db: FirebaseFirestore) {
     fun readUsuarios() {
         db.collection("Usuario")
             .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                    Log.d(TAG, "${document.id} => ${document.data}")
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    // Procesa cada documento
                 }
             }
-            .addOnFailureListener { exception ->
-                Log.w(TAG, "Error getting documents.", exception)
+            .addOnFailureListener { e ->
+                // Error al obtener los documentos
             }
     }
 

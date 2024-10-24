@@ -24,6 +24,7 @@ import com.example.csti.R
 import com.example.csti.data.solicitud
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 @Composable
 fun MainScreen(navController: NavController) {
@@ -33,15 +34,17 @@ fun MainScreen(navController: NavController) {
 
     LaunchedEffect(Unit) {
         coroutineScope.launch {
-            db.collection("Solicitud")
-                .get()
-                .addOnSuccessListener { documents ->
-                    val reportes = documents.mapNotNull { it.toObject(solicitud::class.java) }
-                    solicitudes = reportes
-                }
-                .addOnFailureListener { exception ->
-                    // Manejar el error aquí (ej. mostrar un mensaje al usuario)
-                }
+            try {
+                val reportes = db.collection("solicitudes") // Use the correct collection name
+                    .get()
+                    .await()
+                    .mapNotNull { it.toObject(solicitud::class.java) }
+                solicitudes = reportes
+            } catch (e: Exception) {
+                // Handle error
+            } finally {
+                var isLoading = false
+            }
         }
     }
 
@@ -125,7 +128,7 @@ fun MainScreen(navController: NavController) {
                 items(solicitudes) { reporte ->
                     ReportItem(reporte) { selectedReporte ->
                         // Navegar pasando el ID del reporte
-                        navController.navigate("detalle/${selectedReporte.id_solicitud}?fromMisReportes=false")
+                        navController.navigate("detalle/${selectedReporte.id_profesor}?fromMisReportes=false")
                     }
                 }
             }
@@ -153,15 +156,10 @@ fun ReportItem(solicitud: solicitud, onClick: (solicitud) -> Unit) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
-                    text = solicitud.aula,
-                    fontSize = 16.sp
-                )
+
+                Text(text = solicitud.aula ?: "", fontSize = 16.sp)
                 Spacer(modifier = Modifier.width(16.dp))
-                Text(
-                    text = solicitud.descripcion_problema,
-                    fontSize = 16.sp
-                )
+                Text(text = solicitud.descripcion_problema ?: "", fontSize = 16.sp)
             }
         }
     }
